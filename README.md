@@ -1,5 +1,5 @@
 # Description
-### As a seemless background process, xmReader polls the xmPlaylist API to find what your favorite stations are listening to, adding the current playing song to your Spotify queue, allowing semi-synchronized SiriusXM streaming.
+### As a seemless background process, xmReader polls the xmPlaylist API to find what your favorite SiriusXM stations are listening to, adding the current playing song to your Spotify queue, allowing semi-synchronized SiriusXM streaming.
 
 # Pre-Requisites
 * A Spotify account (Free or Premium)
