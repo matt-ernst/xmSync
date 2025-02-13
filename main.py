@@ -57,20 +57,13 @@ def getSongLink():
 
 def main():
     global buffer
+    print("Press 'q' to quit")
     
     while True:
-        #Checks keyboard input for listing stations
-        if msvcrt.kbhit():  # For Windows
+        #Checks keyboard input
+        if msvcrt.kbhit():
             key = msvcrt.getch().decode().lower()
-            if key == 'l':  # Press 'l' to list stations
-                list_stations()
-            elif key == 'h':  # Press 'h' for help
-                print("\nCommands:")
-                print("l - List all stations")
-                print("h - Show this help menu")
-                print("q - Quit program")
-            elif key == 'q':  # Press 'q' to quit
-                print("\nExiting program...")
+            if key == 'q':  #Press 'q' to quit
                 sys.exit()
     
         spotify_uri = getSongLink()
@@ -79,8 +72,8 @@ def main():
         album = spotify_uri['Image']
         spotify_uri = spotify_uri['URI']
         
-        #If the song is new, open the Spotify URL.
-        if spotify_uri and spotify_uri != buffer: 
+        #If the song is new, add to queue, and send notif
+        if spotify_uri and spotify_uri != buffer: # 
             sp.add_to_queue(spotify_uri)
             buffer = spotify_uri
 
@@ -92,21 +85,4 @@ def main():
             notify('xmReader: Up Next!', f'{song} by {artist}', icon=icon)
             print(f"Added {song} by {artist} to queue.")
 
-def list_stations():
-    print("\nAvailable Stations by Category:")
-    print("=" * 50)
-    
-    current_category = None
-    
-    for line in stations.keys():
-        if line.startswith("# "):
-            # This is a category header
-            current_category = line
-            print(f"\n{current_category}")
-            print("-" * len(current_category))
-        else:
-            # This is a station entry
-            station_value = stations[line]
-            description = station_value.split("#")[1].strip() if "#" in station_value else ""
-            print(f"{line}: {station_value}")
 main()
