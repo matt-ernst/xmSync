@@ -1,9 +1,14 @@
 # Description
-### As a seemless background process, xmReader polls the xmPlaylist API to find what your favorite SiriusXM stations are listening to, adding the current playing song to your Spotify queue, allowing semi-synchronized SiriusXM streaming.
+### xmReader polls the xmPlaylist API to find what your favorite SiriusXM stations are listening to, adding the current playing song to your Spotify queue, allowing semi-synchronized SiriusXM streaming.
 
+# Features
+* Supports any Music Playing SiriusXM Stations
+* Desktop Notifications with Album Covers
+  
 # Pre-Requisites
 * A Spotify account (Free or Premium)
 * Windows 11
+* Python
 * Spotify Desktop
 * Spotify API Keys
   
