@@ -96,6 +96,3 @@ stations = {
     "kidzbop": "kidzbopradio",            # Pop hits sung by kids for kids
     "moonbug": "moonbugradio"             # Laugh Learn Grow with Moonbug
 }
-
-#Set your active station here
-active_station = stations["johnmayer"]
