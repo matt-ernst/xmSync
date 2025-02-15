@@ -1,11 +1,8 @@
 import requests
 import json
 import webbrowser
-import time
 import spotipy
-import os
-import sys
-import time
+import sys, os, time
 import msvcrt
 
 from spotipy.oauth2 import SpotifyOAuth
@@ -29,15 +26,15 @@ auth_manager = SpotifyOAuth(
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
 def getSongLink():
-    global global_stationID
+    global global_stationID, global_buffer
     url = "https://xmplaylist.com/api/station/" + global_stationID
 
     try:
+        #API Request
         time.sleep(1)
         response = requests.get(url)
         response.raise_for_status()
         data = response.json()
-        print(response)
         
         spotify_uri = {
             'URI': "spotify:track:" + data['results'][0]['spotify']['id'],
@@ -45,6 +42,8 @@ def getSongLink():
             'Artist': data['results'][0]['track']['artists'][0],
             'Image': data['results'][0]['spotify']['albumImageLarge']
         }
+
+        #Ensures that the song given by the API is a new song, not the previous
         if spotify_uri['URI'] and spotify_uri['URI'] != global_buffer:
             sp.add_to_queue(spotify_uri['URI'])
             global_buffer = spotify_uri['URI']
@@ -52,7 +51,11 @@ def getSongLink():
                 'src': spotify_uri['Image'],
                 'placement': 'appLogoOverride'
             }
+
+            #Prints the song added to the queue and sends a notification
             print(f"Added {spotify_uri['Title']} by {spotify_uri['Artist']} to queue.")
+            notify('xmReader: Up Next!', f"{spotify_uri['Title']} by {spotify_uri['Artist']}", icon=spotify_uri['Image'])
+        
         return spotify_uri
 
     except requests.exceptions.RequestException as e:
@@ -60,22 +63,23 @@ def getSongLink():
         return None
 
 def main():
-    global global_buffer, global_stationID 
-    print("Enter Desired Station: ")
-    station = input()
+    global global_buffer, global_stationID
+    
+    print("Thank you for using xmReader! To Exit or Stop, Press 'q' \nPlease Enter The Station Name Below!")
+    while True:
+        station = input()
 
-    if station in stations:
-        global_stationID = stations[station]
-    else:
-        print("Invalid Station")
-        sys.exit()
-
-    print("Press 'q' to quit")
+        if station in stations:
+            global_stationID = stations[station]
+            break
+        else:
+            print("Invalid Station, Try Again or Refer to 'stations.py'!")
     
     while True:
         if msvcrt.kbhit():
             key = msvcrt.getch().decode().lower()
-            if key == 'q':  #Press 'q' to quit
+            if key == 'q': 
+                print("Closing!")
                 sys.exit()
     
         getSongLink()
