@@ -5,11 +5,11 @@ import time
 import spotipy
 import os
 import sys
-import msvcrt
+#import msvcrt
 
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
-from win11toast import notify
+#from win11toast import notify
 
 from stations import stations
 from stations import active_station
@@ -57,14 +57,27 @@ def getSongLink():
 
 def main():
     global buffer
+
+    #Type Prompt for Channel (Refer to stations.py)
+    print("Enter Desired Station: ")
+
+    #Wait for keyboard input for station selection, as a string
+    station = input()
+
+    if station in stations:
+        stationID = stations[station]
+    else:
+        print("Invalid Station")
+        sys.exit()
+
     print("Press 'q' to quit")
     
     while True:
         #Checks keyboard input
-        if msvcrt.kbhit():
-            key = msvcrt.getch().decode().lower()
-            if key == 'q':  #Press 'q' to quit
-                sys.exit()
+        #if msvcrt.kbhit():
+        #    key = msvcrt.getch().decode().lower()
+        #    if key == 'q':  #Press 'q' to quit
+        #        sys.exit()
     
         spotify_uri = getSongLink()
         artist = spotify_uri['Artist']
@@ -82,7 +95,7 @@ def main():
                 'placement': 'appLogoOverride'
             }
 
-            notify('xmReader: Up Next!', f'{song} by {artist}', icon=icon)
+            #notify('xmReader: Up Next!', f'{song} by {artist}', icon=icon)
             print(f"Added {song} by {artist} to queue.")
 
 main()
