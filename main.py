@@ -7,7 +7,7 @@ import msvcrt
 
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
-from win11toast import notify
+#from win11toast import notify
 
 from stations import stations
 
@@ -31,7 +31,7 @@ def getSongLink():
 
     try:
         #API Request
-        time.sleep(1)
+        time.sleep(5)
         response = requests.get(url)
         response.raise_for_status()
         data = response.json()
@@ -54,7 +54,7 @@ def getSongLink():
 
             #Prints the song added to the queue and sends a notification
             print(f"Added {spotify_uri['Title']} by {spotify_uri['Artist']} to queue.")
-            notify('xmReader: Up Next!', f"{spotify_uri['Title']} by {spotify_uri['Artist']}", icon=spotify_uri['Image'])
+            #notify('xmReader: Up Next!', f"{spotify_uri['Title']} by {spotify_uri['Artist']}", icon=spotify_uri['Image'])
         
         return spotify_uri
 
@@ -64,8 +64,19 @@ def getSongLink():
 
 def main():
     global global_buffer, global_stationID
+
+    welcomeMessage = r"""
+ ___  ___ ___      ___  _______   _______      __      ________   _______  _______   
+|"  \/"  |"  \    /"  |/"      \ /"     "|    /""\    |"      "\ /"     "|/"      \  
+ \   \  / \   \  //   |:        (: ______)   /    \   (.  ___  :|: ______):        | 
+  \\  \/  /\\  \/.    |_____/   )\/    |    /' /\  \  |: \   ) ||\/    | |_____/   ) 
+  /\.  \ |: \.        |//      / // ___)_  //  __'  \ (| (___\ ||// ___)_ //      /  
+ /  \   \|.  \    /:  |:  __   \(:      "|/   /  \\  \|:       :|:      "|:  __   \  
+|___/\___|___|\__/|___|__|  \___)\_______|___/    \___|________/ \_______)__|  \___) """
     
-    print("Thank you for using xmReader! To Exit or Stop, Press 'q' \nPlease Enter The Station Name Below!")
+    print(welcomeMessage)
+    
+    print("\nThank you for using xmReader! To Exit or Stop, Press 'q' \nPlease Enter The Station Name Below!")
     while True:
         station = input()
 
@@ -83,5 +94,7 @@ def main():
                 sys.exit()
     
         getSongLink()
+
+
 
 main()
