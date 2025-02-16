@@ -29,7 +29,12 @@ SPOTIFY_CLIENT_SECRET=insertYourSpotifyClientSecretKeyHere
 REDIRECT_URI=http://localhost:8888/callback
 ```
 
-# 3.) Select Your Desired Station in `stations.py`
+# 3.) Install Dependencies
+### Dependencies are already packaged in the `requirements.txt`, run the following command to resolve them.
+* Copy the path to `requirements.txt`
+* Run the command `pip install -r "path/to/requirements.txt`
+
+# 4.) View the Station List
 ### Stations are listed in the following format...
 ```
 "johnmayer": "lifewithjohnmayer",     # Your personal soundtrack
@@ -41,17 +46,8 @@ REDIRECT_URI=http://localhost:8888/callback
 "u2": "u2xradio",                     # The whole world of U2
 ```
 
-### If you wanted the John Mayer station, modify the active_station assignment like the following...
-```
-active_station = stations["johnmayer"]
-```
-
-# 4.) Install Dependencies
-### Dependencies are already packaged in the `requirements.txt`, run the following command to resolve them.
-* Copy the path to `requirements.txt`
-* Run the command `pip install -r "path/to/requirements.txt`
-
 # 5.) Listen Along!
-* Open Spotify
-* Run `main.py`
+* Run `main.py`, have Spotify open already.
 * For first time listeners, it should ask you to authenticate via Oauth in a browser prompt.
+* Punch in the station ID listed in `station.py`
+* Now, anytime a song change is noted from the xmPlaylist API, the song will be added to your Spotify queue!
