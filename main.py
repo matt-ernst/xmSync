@@ -30,37 +30,41 @@ def getSongLink():
     url = "https://xmplaylist.com/api/station/" + global_stationID
 
     try:
-        #API Request
-        time.sleep(5)
-        response = requests.get(url)
+        response = requests.get(url, timeout=5)
         response.raise_for_status()
         data = response.json()
+    
+        #Validates that there is a playable song
+        if (data and 'results' in data and data['results'] and 'spotify' in data['results'][0] and 'track' in data['results'][0]):
         
-        spotify_uri = {
-            'URI': "spotify:track:" + data['results'][0]['spotify']['id'],
-            'Title': data['results'][0]['track']['title'],
-            'Artist': data['results'][0]['track']['artists'][0],
-            'Image': data['results'][0]['spotify']['albumImageLarge']
+            spotify_uri = {
+                'URI': "spotify:track:" + data['results'][0]['spotify']['id'],
+                'Title': data['results'][0]['track']['title'],
+                'Artist': data['results'][0]['track']['artists'][0],
+                'Image': data['results'][0]['spotify']['albumImageLarge']
+            }
+        else:
+            return None
+        
+    except (KeyError, IndexError, TypeError) as e:
+        print("Station is Unplayable at the Moment, Enter a Different Station")
+        changeStation()
+        return None
+
+    #Ensures that the song given by the API is a new song, not the previous
+    if spotify_uri['URI'] and spotify_uri['URI'] != global_buffer:
+        sp.add_to_queue(spotify_uri['URI'])
+        global_buffer = spotify_uri['URI']
+        icon = {
+            'src': spotify_uri['Image'],
+            'placement': 'appLogoOverride'
         }
 
-        #Ensures that the song given by the API is a new song, not the previous
-        if spotify_uri['URI'] and spotify_uri['URI'] != global_buffer:
-            sp.add_to_queue(spotify_uri['URI'])
-            global_buffer = spotify_uri['URI']
-            icon = {
-                'src': spotify_uri['Image'],
-                'placement': 'appLogoOverride'
-            }
-
-            #Prints the song added to the queue and sends a notification
-            print(f"Added {spotify_uri['Title']} by {spotify_uri['Artist']} to queue.")
-            #notify('xmReader: Up Next!', f"{spotify_uri['Title']} by {spotify_uri['Artist']}", icon=spotify_uri['Image'])
+        #Prints the song added to the queue and sends a notification
+        print(f"\nAdded {spotify_uri['Title']} by {spotify_uri['Artist']} to queue.")
+        #notify('xmReader: Up Next!', f"{spotify_uri['Title']} by {spotify_uri['Artist']}", icon=spotify_uri['Image'])
         
-        return spotify_uri
-
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching data: {e}")
-        return None
+    return spotify_uri
 
 def main():
     global global_buffer, global_stationID
@@ -76,15 +80,8 @@ def main():
     
     print(welcomeMessage)
     
-    print("\nThank you for using xmReader! To Exit or Stop, Press 'q' \nPlease Enter The Station Name Below!")
-    while True:
-        station = input()
-
-        if station in stations:
-            global_stationID = stations[station]
-            break
-        else:
-            print("Invalid Station, Try Again or Refer to 'stations.py'!")
+    print("\nThank you for using xmReader!\nTo Exit or Stop, Press 'q'\nTo Change Station, Press 'c'")
+    changeStation()
     
     while True:
         if msvcrt.kbhit():
@@ -92,9 +89,21 @@ def main():
             if key == 'q': 
                 print("Closing!")
                 sys.exit()
-    
+            if key == 'c':
+                changeStation()
         getSongLink()
 
+def changeStation():
+    global global_stationID
+    print("Please Enter The Station Name Below!")
+    while True:
+        station = input()
 
+        if station in stations:
+            global_stationID = stations[station]
+            break
+        else:
+            print("Invalid Station, Try Again or Refer to stations.py")
+    
 
 main()
