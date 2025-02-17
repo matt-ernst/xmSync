@@ -1,5 +1,5 @@
 # Description
-### xmReader polls the xmPlaylist API to find what your favorite SiriusXM stations are listening to, adding the current playing song to your Spotify queue, allowing semi-synchronized SiriusXM streaming.
+### xmReader syncs your 'Now Playing' on Spotify with any SiriusXM station of your choice using Spotipy, Spotify, and the xmPlaylist API!
 
 # Features
 * Supports any Music Playing SiriusXM Stations
