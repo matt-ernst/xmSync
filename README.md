@@ -1,11 +1,3 @@
- ___  ___ ___      ___  _______   _______      __      ________   _______  _______   
-|"  \/"  |"  \    /"  |/"      \ /"     "|    /""\    |"      "\ /"     "|/"      \  
- \   \  / \   \  //   |:        (: ______)   /    \   (.  ___  :|: ______):        | 
-  \\  \/  /\\  \/.    |_____/   )\/    |    /' /\  \  |: \   ) ||\/    | |_____/   ) 
-  /\.  \ |: \.        |//      / // ___)_  //  __'  \ (| (___\ ||// ___)_ //      /  
- /  \   \|.  \    /:  |:  __   \(:      "|/   /  \\  \|:       :|:      "|:  __   \  
-|___/\___|___|\__/|___|__|  \___)\_______|___/    \___|________/ \_______)__|  \___)
-
 # Description
 ### xmReader polls the xmPlaylist API to find what your favorite SiriusXM stations are listening to, adding the current playing song to your Spotify queue, allowing semi-synchronized SiriusXM streaming.
 
