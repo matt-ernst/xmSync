@@ -1,5 +1,5 @@
 # Description
-### xmReader syncs your 'Now Playing' on Spotify with any SiriusXM station of your choice using Spotipy, Spotify, and the xmPlaylist API!
+### xmSync syncs your 'Now Playing' on Spotify with any SiriusXM station of your choice using Spotipy, Spotify, and the xmPlaylist API!
 
 # Features
 * Supports any Music Playing SiriusXM Stations
@@ -22,10 +22,12 @@
 * Create a .env File in the Script Directory
 * Copy and paste your Client ID and Client Secret
 * Use the same Redirect URI
+* The Timeout Value is the Amount of Time the Program Will Run Before Killing its Process
 ```
 SPOTIFY_CLIENT_ID=insertYourSpotifyClientIDHere
 SPOTIFY_CLIENT_SECRET=insertYourSpotifyClientSecretKeyHere
 REDIRECT_URI=http://localhost:8888/callback
+TIMEOUT=minutes
 ```
 
 # 3.) Install Dependencies
