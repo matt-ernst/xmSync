@@ -71,7 +71,7 @@ def main():
     #Initializes Spotify OAuth first, if it fails, the program will exit.
     oauthConnection()
 
-    timeout = os.getenv('TIMEOUT')
+    timeout = int(os.getenv('TIMEOUT'))
     start_time = datetime.now()
     
     welcomeMessage = r""""                                                                                               
@@ -97,28 +97,17 @@ ___   ___ .___  ___.      _______.____    ____ .__   __.   ______
             if key == 'c':
                 changeStation()
         getSongLink()
-        # Check our timer
-        if timeout:
-            # Compare our current time against our start time
-            current_time = datetime.now()
-            # Calculate the difference
-            difference = current_time - start_time
-            # Get the difference in seconds
-            difference_in_seconds = difference.total_seconds()
-            # Kill the app if we exceed our timeout
-            if difference_in_seconds > timeout:
-                print("xmSync closed due to the timeout configuration")
-                sys.exit()
 
-        #Check out timer
-        if timeout:
+        #Check if Timeout variable is set
+        if timeout and timeout != 0:
             #Compare our current time against our start time
             current_time = datetime.now()
 
             #Calculate difference in seconds
             time_difference = (current_time - start_time).total_seconds()
 
-            if time_difference > ord(timeout):
+            # Kill the app if we exceed our timeout
+            if time_difference > timeout:
                 print("xmSync Closed due to Timeout Configuration")
                 sys.exit()
 
