@@ -6,7 +6,7 @@
 * Desktop Notifications with Album Covers
   
 # Pre-Requisites
-* A Spotify account (Free or Premium)
+* A Spotify account (Premium required for API access)
 * Python
 * Spotify Desktop
 * Spotify API Keys
