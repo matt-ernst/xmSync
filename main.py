@@ -8,13 +8,31 @@ import msvcrt
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
 from datetime import datetime
+<<<<<<< HEAD
+=======
+#from win11toast import notify
+>>>>>>> 161aeb461eab45694d341d3efd77f7a85944072d
 
 from stations import stations
 
 
 global_buffer = ""             #Stores last song that the API called (Prevents repeat songs each API call)
+<<<<<<< HEAD
 global_stationID = ""          #Stores the station ID that the user wants to listen to
 global_sp = None               #Spotify API Object
+=======
+global_stationID = ""
+
+auth_manager = SpotifyOAuth(
+    client_id=os.getenv('SPOTIFY_CLIENT_ID'),
+    client_secret=os.getenv('SPOTIFY_CLIENT_SECRET'),
+    redirect_uri=os.getenv('REDIRECT_URI'),
+    scope='user-modify-playback-state'
+)
+
+timeout = os.getenv('TIMEOUT')
+sp = spotipy.Spotify(auth_manager=auth_manager)
+>>>>>>> 161aeb461eab45694d341d3efd77f7a85944072d
 
 def getSongLink():
     global global_stationID, global_buffer, global_sp
@@ -67,9 +85,13 @@ def getSongLink():
 
 def main():
     global global_buffer, global_stationID
+<<<<<<< HEAD
     
     #Initializes Spotify OAuth first, if it fails, the program will exit.
     oauthConnection()
+=======
+    start_time = datetime.now()
+>>>>>>> 161aeb461eab45694d341d3efd77f7a85944072d
 
     timeout = os.getenv('TIMEOUT')
     start_time = datetime.now()
@@ -97,6 +119,18 @@ ___   ___ .___  ___.      _______.____    ____ .__   __.   ______
             if key == 'c':
                 changeStation()
         getSongLink()
+        # Check our timer
+        if timeout:
+            # Compare our current time against our start time
+            current_time = datetime.now()
+            # Calculate the difference
+            difference = current_time - start_time
+            # Get the difference in seconds
+            difference_in_seconds = difference.total_seconds()
+            # Kill the app if we exceed our timeout
+            if difference_in_seconds > timeout:
+                print("xmSync closed due to the timeout configuration")
+                sys.exit()
 
         #Check out timer
         if timeout:

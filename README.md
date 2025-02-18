@@ -7,7 +7,6 @@
   
 # Pre-Requisites
 * A Spotify account (Free or Premium)
-* Windows 11
 * Python
 * Spotify Desktop
 * Spotify API Keys
