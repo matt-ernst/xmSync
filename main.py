@@ -7,6 +7,7 @@ import msvcrt
 
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
+from datetime import datetime
 #from win11toast import notify
 
 from stations import stations
@@ -23,6 +24,7 @@ auth_manager = SpotifyOAuth(
     scope='user-modify-playback-state'
 )
 
+timeout = os.getenv('TIMEOUT')
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
 def getSongLink():
@@ -68,6 +70,7 @@ def getSongLink():
 
 def main():
     global global_buffer, global_stationID
+    start_time = datetime.now()
 
     welcomeMessage = r"""
  ___  ___ ___      ___  _______   _______      __      ________   _______  _______   
@@ -92,6 +95,18 @@ def main():
             if key == 'c':
                 changeStation()
         getSongLink()
+        # Check our timer
+        if timeout:
+            # Compare our current time against our start time
+            current_time = datetime.now()
+            # Calculate the difference
+            difference = current_time - start_time
+            # Get the difference in seconds
+            difference_in_seconds = difference.total_seconds()
+            # Kill the app if we exceed our timeout
+            if difference_in_seconds > timeout:
+                print("xmSync closed due to the timeout configuration")
+                sys.exit()
 
 def changeStation():
     global global_stationID
