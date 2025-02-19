@@ -13,7 +13,7 @@ from stations import stations
 global_buffer = ""             #Stores last song that the API called (Prevents repeat songs each API call)
 global_stationID = ""          #Stores the station ID that the user wants to listen to
 global_sp = None               #Spotify API Object
-global_logo = r"""                                                           
+global_logo = r"""             #CLI Logo                                              
 ___   ___ .___  ___.      _______.____    ____ .__   __.   ______ 
 \  \ /  / |   \/   |     /       |\   \  /   / |  \ |  |  /      |
  \  V  /  |  \  /  |    |   (----` \   \/   /  |   \|  | |  ,----'
@@ -79,7 +79,7 @@ def getSongLink():
 def main():
     global global_buffer, global_stationID, global_logo
     
-    #Initializes Spotify OAuth first, if it fails, the program will exit.
+    #Initializes Spotify OAuth
     oauthConnection()
 
     timeout = int(os.getenv('TIMEOUT'))
@@ -107,11 +107,12 @@ def main():
             #Calculate difference in seconds
             time_difference = (current_time - start_time).total_seconds()
 
-            # Kill the app if we exceed our timeout
+            #Kill the app if we exceed our timeout
             if time_difference > timeout:
                 print("xmSync Closed due to Timeout Configuration")
                 sys.exit()
 
+#Manual Change Station Using User Input
 def changeStation():
     global global_stationID
 
@@ -126,12 +127,14 @@ def changeStation():
         else:
             print("Invalid Station, Try Again or Refer to stations.py")
 
+#Automated Change Station Using Preferred Stations
 def changeStationScripted():
     global global_stationID
 
     #Check for PREFERRED1, PREFERRED2, PREFERRED3 in .env
     preferred_stations = [os.getenv('PREFERRED1'), os.getenv('PREFERRED2'), os.getenv('PREFERRED3')]
     
+
     for station in preferred_stations:
         if station in stations:
             global_stationID = stations[station]
@@ -146,6 +149,7 @@ def changeStationScripted():
     print("No valid preferred stations found. Please enter a station manually.")
     changeStation()
     
+#Initializes Spotify OAuth
 def oauthConnection():
     global global_sp
 
@@ -162,4 +166,5 @@ def oauthConnection():
         sys.exit(1)
 
     global_sp = spotipy.Spotify(auth_manager=auth_manager)
+    
 main()
