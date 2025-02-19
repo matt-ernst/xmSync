@@ -1,4 +1,5 @@
 requests==2.31.0
 spotipy==2.23.0
 python-dotenv==1.0.0
-win11toast==0.34
+msvcrt==1.0.0
+datetime==4.3

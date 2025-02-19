@@ -8,13 +8,18 @@ import msvcrt
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
 from datetime import datetime
-
 from stations import stations
-
 
 global_buffer = ""             #Stores last song that the API called (Prevents repeat songs each API call)
 global_stationID = ""          #Stores the station ID that the user wants to listen to
 global_sp = None               #Spotify API Object
+global_logo = r"""                                                           
+___   ___ .___  ___.      _______.____    ____ .__   __.   ______ 
+\  \ /  / |   \/   |     /       |\   \  /   / |  \ |  |  /      |
+ \  V  /  |  \  /  |    |   (----` \   \/   /  |   \|  | |  ,----'
+  >   <   |  |\/|  |     \   \      \_    _/   |  . `  | |  |     
+ /  .  \  |  |  |  | .----)   |       |  |     |  |\   | |  `----.
+/__/ \__\ |__|  |__| |_______/        |__|     |__| \__|  \______|"""
 
 def getSongLink():
     global global_stationID, global_buffer, global_sp
@@ -38,10 +43,16 @@ def getSongLink():
         else:
             return None
         
+    #If API Call Fails, Change Station - Try preferred stations first.
     except (KeyError, IndexError, TypeError) as e:
-        print("Station is Unplayable at the Moment, Enter a Different Station")
-        changeStation()
-        return None
+        try:
+            print("An error occurred: " + str(e))
+            changeStationScripted()
+
+        except Exception as e:
+            print(f"Failed to change station: {e}")
+            changeStation()
+            return None
 
     #Compares the most recent song xmPlaylist returned with what is currently in queue. If they are different, the song is added to the queue
     if spotify_uri['URI'] and spotify_uri['URI'] != global_buffer:
@@ -66,7 +77,7 @@ def getSongLink():
     return spotify_uri
 
 def main():
-    global global_buffer, global_stationID
+    global global_buffer, global_stationID, global_logo
     
     #Initializes Spotify OAuth first, if it fails, the program will exit.
     oauthConnection()
@@ -74,17 +85,7 @@ def main():
     timeout = int(os.getenv('TIMEOUT'))
     start_time = datetime.now()
     
-    welcomeMessage = r""""                                                                                               
-___   ___ .___  ___.      _______.____    ____ .__   __.   ______ 
-\  \ /  / |   \/   |     /       |\   \  /   / |  \ |  |  /      |
- \  V  /  |  \  /  |    |   (----` \   \/   /  |   \|  | |  ,----'
-  >   <   |  |\/|  |     \   \      \_    _/   |  . `  | |  |     
- /  .  \  |  |  |  | .----)   |       |  |     |  |\   | |  `----.
-/__/ \__\ |__|  |__| |_______/        |__|     |__| \__|  \______|
-                                                                """
-    
-    print(welcomeMessage)
-    
+    print(global_logo)
     print("\nThank you for using xmSync!\nTo Exit or Stop, Press 'q'\nTo Change Station, Press 'c'")
     changeStation()
     
@@ -124,6 +125,26 @@ def changeStation():
             break
         else:
             print("Invalid Station, Try Again or Refer to stations.py")
+
+def changeStationScripted():
+    global global_stationID
+
+    #Check for PREFERRED1, PREFERRED2, PREFERRED3 in .env
+    preferred_stations = [os.getenv('PREFERRED1'), os.getenv('PREFERRED2'), os.getenv('PREFERRED3')]
+    
+    for station in preferred_stations:
+        if station in stations:
+            global_stationID = stations[station]
+            print(f"Previous Station Failed, Using Preferred Station: {station}")
+
+            try:
+                getSongLink()
+            except Exception as e:
+                print(f"Failed to add song to queue: {e}")
+            return
+    
+    print("No valid preferred stations found. Please enter a station manually.")
+    changeStation()
     
 def oauthConnection():
     global global_sp

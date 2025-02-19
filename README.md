@@ -19,15 +19,19 @@
 * `http://localhost:8888/callback` will be your Redirect URI
   
 # 2.) Supply Credentials in Environment File
-* Create a .env File in the Script Directory
-* Copy and paste your Client ID and Client Secret
-* Use the same Redirect URI
-* The Timeout Value is the Amount of Time the Program Will Run Before Killing its Process
+* Create a .env file in the script directory
+* Copy and paste your client ID and client secret
+* Use the same redirect URL.
+* The timeout value does not have to be listed, but it is the amount of time (seconds) after starting that the program will close itself out.
+* Preferred stations do not have to be listed, but if your current listening station connection breaks, it will try a preferred station instead.
 ```
 SPOTIFY_CLIENT_ID=insertYourSpotifyClientIDHere
 SPOTIFY_CLIENT_SECRET=insertYourSpotifyClientSecretKeyHere
 REDIRECT_URI=http://localhost:8888/callback
-TIMEOUT=minutes
+TIMEOUT=seconds
+PREFERRED_1=preffered_station_name1
+PREFERRED_2=preffered_station_name2
+PREFERRED_3=preffered_station_name3
 ```
 
 # 3.) Install Dependencies
